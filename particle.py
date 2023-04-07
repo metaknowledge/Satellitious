@@ -1,6 +1,6 @@
 import pygame
 import math
-
+from globalVariables import *
 class Particle:
   def __init__(self, name, position, velocity, color, objectmass):
     self.name = name
@@ -21,16 +21,16 @@ class Particle:
   def freeze(self):
     self.static = True
 
-  def draw(self):
-    pygame.draw.circle(screen, self.color, (self.pos+ global_offset)/global_zoom, max(2, self.radius/global_zoom))
+  def draw(self, windowPostion):
+    pygame.draw.circle(screen, self.color, (self.pos+ windowPostion.offset)/windowPostion.zoom, max(2, self.radius/windowPostion.zoom), 1)
 
-  def draw_line(self, color, length, multiplyer):
-    relative_position = self.pos + global_offset
-    pygame.draw.aaline(screen, color, relative_position/global_zoom, (relative_position + length*multiplyer)/global_zoom)
+  def draw_line(self, color, length, multiplyer, windowPostion):
+    relative_position = self.pos + windowPostion.offset
+    pygame.draw.aaline(screen, color, relative_position/windowPostion.zoom, (relative_position + length*multiplyer)/windowPostion.zoom)
 
-  def draw_path(self):
+  def draw_path(self, windowPostion):
     if len(self.points) > 2:
-      points = list(map(lambda point: (point + global_offset)/global_zoom, self.points))
+      points = list(map(lambda point: (point + windowPostion.offset)/windowPostion.zoom, self.points))
       pygame.draw.aalines(screen, "yellow", False, points)
 
   def merge_with(self, target):
