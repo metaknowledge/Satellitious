@@ -48,12 +48,12 @@ class Particle:
   def freeze(self):
     self.static = True
 
-  def draw(self, screen, windowPostion):
-    pygame.draw.circle(screen, self.color, (self.pos+ windowPostion.offset)/windowPostion.zoom, max(2, self.radius/windowPostion.zoom), 1)
+  def draw(self, screen: pygame.surface, offset: pygame.Vector2, zoom: float):
+    pygame.draw.circle(screen, self.color, (self.pos + offset)/zoom, max(2, self.radius/zoom), 1)
 
-  def draw_line(self, screen, color, length, multiplyer, windowPostion):
-    relative_position = self.pos + windowPostion.offset
-    pygame.draw.aaline(screen, color, relative_position/windowPostion.zoom, (relative_position + length*multiplyer)/windowPostion.zoom)
+  def draw_line(self, screen, color, length, multiplyer, windowState):
+    relative_position = self.pos + windowState.offset
+    pygame.draw.aaline(screen, color, relative_position/windowState.zoom, (relative_position + length*multiplyer)/windowState.zoom)
 
   def draw_path(self, screen, windowPostion):
     if len(self.points) > 2:

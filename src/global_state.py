@@ -11,7 +11,9 @@ class GlobalState:
   delta = 0
   clock = None
   world_ui = pygame.sprite.Group()
-
+  planets = None
+  offset = pygame.Vector2(0,0)
+  zoom = 2
 
   @staticmethod
   def load_window():

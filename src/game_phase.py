@@ -9,21 +9,9 @@ from src.services.visualization_service import VisualizationService
 
 import logging
 
-def load_planets() -> list[Particle]:
-  sun = Particle('sun', pygame.Vector2(0,0), pygame.Vector2(0,0), "white", 400)
-  sun.freeze()
-  earth = Particle('earth' ,pygame.Vector2(0,-500), pygame.Vector2(0.9,0), "green", 20)
-  moon = Particle('moon', pygame.Vector2(0, -234*2), pygame.Vector2(1.6,0), "gray", 0.01)
-  mars = Particle('mars', pygame.Vector2(0, 500*2), pygame.Vector2(-0.7,0), "orange", 20)
-
-  player = Particle('ship', pygame.Vector2(500*2, 0), pygame.Vector2(0,-0.5), "white", 0.01)
-
-  return [sun, earth, mars, moon, player]
-
-
-def physics(particles: list[Particle]) -> None:
+def physics(screen, particles: list[Particle]) -> None:
   for particle in particles:
-    # particle.draw()
+    particle.draw(screen, GlobalState.offset, GlobalState.zoom)
     particle.pos += particle.vel
     if not particle.static:
       for body in particles:
@@ -32,10 +20,10 @@ def physics(particles: list[Particle]) -> None:
           particle.vel += acceleration
           particle.vel = particle.vel.clamp_magnitude(5)
           if GlobalState.debug:
-            particle.draw_line('purple', acceleration, 1000, GlobalState.SCREEN)
+            particle.draw_line(screen, 'purple', acceleration, 1000, GlobalState)
 
       if GlobalState.debug:
-        particle.draw_line('red', particle.vel, 30, GlobalState.SCREEN)
+        particle.draw_line(screen, 'red', particle.vel, 30, GlobalState)
 
 
 def collisions(planets: list[Particle]) -> None:
@@ -68,13 +56,11 @@ def main_menu():
   logging.info("main menu")
 
 #called once every tick
-def game(screen):
+def game(screen: pygame.Surface):
+  screen.fill("black")
   logging.info("game")
-
-
-
-
-
+  physics(screen, GlobalState.planets)
+  # collisions(GlobalState.planets)
 
 
 

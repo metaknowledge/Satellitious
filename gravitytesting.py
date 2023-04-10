@@ -1,7 +1,6 @@
 import pygame
 from pygame.locals import *
 from src.components.particle import Particle
-import init as Game
 from src.game_phase import load_planets
 
 screen = Game.screen
@@ -110,20 +109,11 @@ while running:
   # fill the screen with a color to wipe away anything from last frame
   screen.fill("black")
 
-  # keys = pygame.key.get_pressed()
-  # if keys[pygame.K_UP]:
-  #   Game.offset.y += speed * Game.zoom
-  # if keys[pygame.K_DOWN]:
-  #   Game.offset.y -= speed * Game.zoom
-  # if keys[pygame.K_RIGHT]:
-  #   Game.offset.x -= speed * Game.zoom
-  # if keys[pygame.K_LEFT]:
-  #   Game.offset.x += speed * Game.zoom
-  # if player and Game.debug:
-  #   pygame.draw.aaline(screen, 'green', (player.pos + Game.offset)/Game.zoom, (player.pos + Game.offset + playerRotation*100)/Game.zoom)
-  #   mouse_position(pygame.mouse.get_pos())
-  #   fps = Game.fira_code.render('fps:' + str(clock.get_fps().__trunc__()), True, "white")
-  #   screen.blit(fps, (0,0))
+  if player and Game.debug:
+    pygame.draw.aaline(screen, 'green', (player.pos + Game.offset)/Game.zoom, (player.pos + Game.offset + playerRotation*100)/Game.zoom)
+    mouse_position(pygame.mouse.get_pos())
+    fps = Game.fira_code.render('fps:' + str(clock.get_fps().__trunc__()), True, "white")
+    screen.blit(fps, (0,0))
 
   collisions(particles)
   physics()
