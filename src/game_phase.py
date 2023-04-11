@@ -4,26 +4,31 @@ import pygame
 from pygame.locals import *
 
 from src.components.particle import Particle
+from src.components.planet import Planet
 from src.global_state import GlobalState
 from src.services.visualization_service import VisualizationService
 
 import logging
 
-def physics(screen, particles: list[Particle]) -> None:
-  for particle in particles:
-    particle.draw(screen, GlobalState.offset, GlobalState.zoom)
-    particle.pos += particle.vel
-    if not particle.static:
-      for body in particles:
-        if body is not particle:
-          acceleration = particle.cal_gravity(body)
-          particle.vel += acceleration
-          particle.vel = particle.vel.clamp_magnitude(5)
-          if GlobalState.debug:
-            particle.draw_line(screen, 'purple', acceleration, 1000, GlobalState)
+def physics(screen, planets: list[Planet], ticks: int) -> None:
+  # for particle in particles:
+  #   particle.draw(screen, GlobalState.offset, GlobalState.zoom)
+  #   particle.pos += particle.vel
+  #   if not particle.static:
+  #     for body in particles:
+  #       if body is not particle:
+  #         acceleration = particle.cal_gravity(body)
+  #         particle.vel += acceleration
+  #         particle.vel = particle.vel.clamp_magnitude(5)
+  #         if GlobalState.debug:
+  #           particle.draw_line(screen, 'purple', acceleration, 1000, GlobalState)
 
-      if GlobalState.debug:
-        particle.draw_line(screen, 'red', particle.vel, 30, GlobalState)
+  #     if GlobalState.debug:
+  #       particle.draw_line(screen, 'red', particle.vel, 30, GlobalState)
+  planets[1].cal_pos(ticks / 10000, None)
+  planets[2].cal_pos(ticks / 10000, planets[1].pos)
+  for planet in planets:
+    planet.draw(screen, GlobalState.offset, GlobalState.zoom)
 
 
 def collisions(planets: list[Particle]) -> None:
@@ -58,8 +63,7 @@ def main_menu():
 #called once every tick
 def game(screen: pygame.Surface):
   screen.fill("black")
-  logging.info("game")
-  physics(screen, GlobalState.planets)
+  physics(screen, GlobalState.planets, GlobalState.ticks)
   # collisions(GlobalState.planets)
 
 

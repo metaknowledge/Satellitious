@@ -18,7 +18,6 @@ def main():
 
   pygame.init()
   GlobalState.load_window()
-  GlobalState.clock = pygame.time.Clock()
   running = True
 
   #makes the main menu
@@ -29,7 +28,8 @@ def main():
   background.add_children(menu_buttons)
 
   #make the game ui
-  game_screen = InterfaceNode.from_size(1280, 720)
+  game_screen = InterfaceNode.from_size(1180, 620)
+  game_screen.rect.topleft = (50,50)
   game_screen.image.fill("black")
 
   #makes the world ui
@@ -62,9 +62,9 @@ def main():
         GlobalState.GAME_STATE = GameState.GAME
         GlobalState.planets = load_planets()
         logging.debug("changed game!")
-        player = GlobalState.planets[0]
       if event.type == pygame.MOUSEWHEEL:
-        GlobalState.zoom += event.y * 0.01
+        GlobalState.zoom += event.y * 0.01 * GlobalState.zoom
+
     if GlobalState.GAME_STATE == GameState.MAIN_MENU:
       main_menu()
     if GlobalState.GAME_STATE == GameState.GAME:
@@ -78,13 +78,14 @@ def main():
         GlobalState.offset.x -= GlobalState.zoom * GlobalState.delta * 1000
       if keys[pygame.K_LEFT]:
         GlobalState.offset.x += GlobalState.zoom * GlobalState.delta * 1000
-      player.update()
+      # player.update()
       if player and GlobalState.debug:
         player.draw_debug(game_screen.image)
         fps = fira_font.render('fps:' + str(GlobalState.clock.get_fps().__trunc__()), True, "white")
         game_screen.image.blit(fps, (0,0))
 
-    GlobalState.SCREEN.fill("black")
+    GlobalState.SCREEN.fill("white")
+
     GlobalState.world_ui.update()
     GlobalState.world_ui.draw(GlobalState.SCREEN)
 
