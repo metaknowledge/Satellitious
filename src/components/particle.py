@@ -1,6 +1,7 @@
 import pygame
 import math
 import random
+from typing import Self
 
 class Particle:
   pos: pygame.Vector2
@@ -8,14 +9,13 @@ class Particle:
   mass: float
   particle_radius: float
 
-
   def __init__(self, position,  color, objectmass):
     self.pos = position
     self.color = color
     self.mass = objectmass
     self.particle_radius = math.sqrt(self.mass/math.pi)
 
-  def cal_gravity(self, target):
+  def cal_gravity(self, target: Self):
     distance_squared = self.pos.distance_squared_to(target.pos)
     magnitude = target.mass / distance_squared
     acceleration = (target.pos - self.pos).normalize() * min(magnitude, 8)

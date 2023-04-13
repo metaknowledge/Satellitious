@@ -13,8 +13,11 @@ class GlobalState:
   world_ui = pygame.sprite.Group()
   planets = None
   offset = pygame.Vector2(0,0)
-  zoom = 10
+  zoom = 1
   ticks = 0
+  running = True
+  focus = False
+  player = None
 
   @staticmethod
   def load_window():
@@ -31,6 +34,6 @@ class GlobalState:
     pygame.display.flip()
     GlobalState.ticks = pygame.time.get_ticks()
     #diffrence of time between each tick in seconds
-    GlobalState.delta = GlobalState.clock.tick(60) / 1000
+    GlobalState.delta = GlobalState.clock.tick(Config.FPS) / 1000
 
 

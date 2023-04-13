@@ -4,13 +4,20 @@ from src.components.particle import Particle
 from src.global_state import GlobalState
 
 class Player(Particle):
+  vel: pygame.Vector2
   rotation: pygame.Vector2
 
-  def __init__(self, name, position, velocity, color, objectmass, rotation: pygame.Vector2):
-    super().__init__(name, position, velocity, color, objectmass)
-    self.rotation= rotation
+  def __init__(self, position,  color, objectmass, velocity: pygame.Vector2, rotation: pygame.Vector2):
+    super().__init__(position, color, objectmass)
+    self.vel = velocity
+    self.rotation = rotation
 
-  def update(self):
+
+  def update(self, planets):
+    for planet in planets:
+      acceleration = self.cal_gravity(planet)
+      self.vel += acceleration
+
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
         self.vel += self.rotation * 0.01
