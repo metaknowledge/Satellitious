@@ -16,13 +16,13 @@ def load_planets() -> list[Planet]:
 
   sun = Planet(pygame.Vector2(0,0), "yellow", 100_000, pygame.Vector2(0,0), 0, 1)
   earth = Planet(pygame.Vector2(0,-10000), "green", 500, pygame.Vector2(0,0), 10000, sun.mass)
-  moon = Planet(pygame.Vector2(0, -10100), "red", 2, pygame.Vector2(0, -500), 50, earth.mass)
+  # moon = Planet(pygame.Vector2(0, -10100), "red", 2, pygame.Vector2(0, -500), 50, earth.mass)
 
   jupiter = Planet(pygame.Vector2(0, 0), "orange", 500, pygame.Vector2(0, 0 ), 34000, sun.mass)
 
   venus = Planet(pygame.Vector2(0, 0), "pink", 150, pygame.Vector2(0, 0), 5500, sun.mass)
 
-  return [sun, earth, moon, jupiter]
+  return [sun, earth, jupiter]
 
 def mouse_position(pos):
   pygame.draw.circle(screen, 'white', pos, 1)

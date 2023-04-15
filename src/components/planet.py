@@ -32,10 +32,8 @@ class Planet(Particle):
     self.pos.x = self.orbital_radius * math.sin(self.frequency * time) + self.origin.x
     self.pos.y = self.orbital_radius * math.cos(self.frequency * time) + self.origin.y
 
-  @staticmethod
-  def cal_pos(planet: Self, time: int, new_origin: pygame.Vector2) -> pygame.Vector2:
-    if not new_origin:
-      new_origin = pygame.Vector2(0,0)
-    x = planet.orbital_radius * math.sin(planet.frequency * time) + new_origin.x
-    y = planet.orbital_radius * math.cos(planet.frequency * time) + new_origin.y
+  def cal_pos(self, time: int) -> pygame.Vector2:
+    origin = self.origin
+    x = self.orbital_radius * math.sin(self.frequency * time) + origin.x
+    y = self.orbital_radius * math.cos(self.frequency * time) + origin.y
     return pygame.Vector2(x,y)

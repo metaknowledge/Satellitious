@@ -32,9 +32,9 @@ def physics(planets: list[Planet], ticks: int, player: Player) -> None:
 
   #     if GlobalState.debug:
   #       particle.draw_line(screen, 'red', particle.vel, 30, GlobalState)
-  planets[1].set_new_pos(ticks / 200000, None)
-  planets[2].set_new_pos(ticks / 200000, planets[1].pos)
-  planets[3].set_new_pos(ticks / 200000, None)
+  planets[1].set_new_pos(ticks / 100000, None)
+    # planets[].set_new_pos(ticks / 100000, planets[1].pos)
+  planets[2].set_new_pos(ticks / 100000, None)
   player.update(planets)
   player.pos += player.vel
 
@@ -46,15 +46,19 @@ def draw_planets(screen, planets: list[Planet], player: Particle):
   player.draw_debug(screen)
   player.draw_line(screen, "green", player.vel * 100, GlobalState.offset, GlobalState.zoom)
 
-def predict_player(screen, planets: list[Planet], player: Particle):
+def predict_player(planets: list[Planet], player: Particle, ticks: int) -> list[pygame.Vector2]:
   points: list[pygame.Vector2] = [player.pos.copy()]
-  for i in range(10):
-    dt = 1
+  vel: pygame.Vector2 = player.vel.copy()
+  for i in range(15):
+    dt = 1_000_000 * i
+    time = (ticks + i*dt) / 100_000
     for planet in planets:
-      distance_squared = points[i+1].pos.distance_squared_to(planet.pos)
+      distance_squared = points[i].distance_squared_to(planet.cal_pos(time))
       magnitude = planet.mass / distance_squared
-      acceleration = (planet.pos - player.pos).normalize() * min(magnitude, 8)
-      planet.vel += acceleration
+      acceleration = (planet.cal_pos(time) - points[i]).normalize() * min(magnitude, 8)
+      vel += acceleration * (dt/100_000)
+    points.append(points[i]+(vel*dt/100_000))
+  return points
 
 
 
@@ -86,7 +90,6 @@ def draw_fps(screen):
   screen.blit(fps, (0,0))
 
 def main_menu(background: InterfaceNode, menu_buttons: InterfaceNode, settings: InterfaceNode, game_screen: InterfaceNode):
-  logging.info("main menu")
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       GlobalState.running = False
@@ -131,6 +134,10 @@ def game(screen: pygame.Surface):
 
   draw_planets(screen, GlobalState.planets, GlobalState.player)
   draw_fps(screen)
+  points = predict_player(GlobalState.planets, GlobalState.player, GlobalState.ticks)
+  points = map(GlobalState.true_position, points)
+  points = list(points)
+  pygame.draw.aalines(screen, "yellow", False, points)
     # collisions(GlobalState.planets)
 
 

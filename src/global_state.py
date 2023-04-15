@@ -36,4 +36,8 @@ class GlobalState:
     #diffrence of time between each tick in seconds
     GlobalState.delta = GlobalState.clock.tick(Config.FPS) / 1000
 
+  @staticmethod
+  def true_position(point: pygame.Vector2):
+    return (point + GlobalState.offset) / GlobalState.zoom
+
 
