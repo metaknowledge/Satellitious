@@ -1,5 +1,5 @@
 import pygame
-from typing import Callable
+from typing import Callable, Self
 # from src.components.interface_node import InterfaceNode
 
 class InterfaceNode(pygame.sprite.Sprite):
@@ -8,48 +8,54 @@ class InterfaceNode(pygame.sprite.Sprite):
   children: pygame.sprite.Group
   click_event: Callable
   color: pygame.Color
+  relative_pos: pygame.Vector2
 
-  def __init__(self, surface, x, y, click_event, color):
+  def __init__(self, surface, x, y):
     super().__init__()
     self.image = surface
     self.rect = self.image.get_rect(topleft=(x,y))
     self.children = pygame.sprite.Group()
-    self.click_event = click_event
-    self.color = color
-
+    self.relative_pos = pygame.Vector2(0, 0)
   @classmethod
   def from_pos_size(cls, x, y, w, h):
-    return cls(pygame.Surface((w, h)), x, y, None, None)
+    return cls(pygame.Surface((w, h)), x, y)
 
   @classmethod
   def from_surface(cls, surface):
-    return cls(surface, 0, 0, None, None)
+    return cls(surface, 0, 0)
 
   @classmethod
   def from_size(cls, w, h):
     return cls.from_pos_size(0, 0, w, h)
 
+  @classmethod
+  def from_tuple(cls, size: tuple):
+    return cls.from_pos_size(0, 0, size[0], size[1])
+
   def add_children(self, *children):
+    for child in children:
+      child.set_relative_position(self)
     self.children.add(children)
+
+  def set_relative_position(self, parent: Self):
+    self.relative_pos = parent.rect.topleft
 
   def remove_children(self, *children):
     self.children.remove(children)
 
-  def add_click_event(self, click_event):
-    self.click_event = click_event
-
   def update(self) -> None:
-    if self.color:
-      self.image.fill(self.color)
     self.children.update()
     self.children.draw(self.image)
 
-  def collide_with_mouse(self, mouse_pos: pygame.Vector2):
-    for node in self.children.sprites():
-      relative_mouse_pos = mouse_pos - pygame.Vector2(self.rect.topleft)
-      if node.rect.collidepoint(relative_mouse_pos) and node.click_event:
-        node.click_event()
+class Button(InterfaceNode):
+  click_event: Callable
 
-  @staticmethod
-  def remove_from_group(group: pygame.sprite.Sprite, node):
-    group.remove(node)
+  def add_click_event(self, click_event):
+    self.click_event = click_event
+
+  def collide_with_mouse(self, mouse_pos: pygame.Vector2):
+    relative_mouse_pos = mouse_pos - self.relative_pos
+    if self.rect.collidepoint(relative_mouse_pos) and self.click_event:
+      self.click_event()
+
+

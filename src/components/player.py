@@ -27,5 +27,5 @@ class Player(Particle):
       self.rotation.rotate_ip(1)
 
   def draw_debug(self, screen):
-    pygame.draw.aaline(screen, 'green', (self.pos + GlobalState.offset)/GlobalState.zoom, (self.pos + GlobalState.offset + self.rotation*100)/GlobalState.zoom)
+    pygame.draw.aaline(screen, 'green', (self.pos + GlobalState.offset)/GlobalState.zoom, (self.pos + GlobalState.offset)/ GlobalState.zoom + self.rotation*100)
     # mouse_position(pygame.mouse.get_pos())

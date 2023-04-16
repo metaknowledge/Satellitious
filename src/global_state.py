@@ -1,7 +1,9 @@
 import pygame
 
 from src.components.game_state import GameState
+from src.services.visualization_service import VisualizationService
 from src.config import Config
+from src.components.interface_node import InterfaceNode
 
 class GlobalState:
   GAME_STATE = GameState.MAIN_MENU
@@ -18,12 +20,18 @@ class GlobalState:
   running = True
   focus = False
   player = None
+  main_menu_screen: InterfaceNode
+  game_screen: InterfaceNode
+  settings_screen: InterfaceNode
 
   @staticmethod
   def load_window():
     GlobalState.SCREEN = pygame.display.set_mode(Config.screen_size)
     GlobalState.SCREEN.fill("black")
     GlobalState.clock = pygame.time.Clock()
+    pygame.display.set_caption("Satellitious")
+    icon = VisualizationService.get_icon_image()
+    pygame.display.set_icon(icon)
 
   @staticmethod
   def toggle_debug():

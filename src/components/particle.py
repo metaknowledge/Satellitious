@@ -22,7 +22,7 @@ class Particle:
     return acceleration
 
   def draw(self, screen: pygame.surface, offset: pygame.Vector2, zoom: float):
-    pygame.draw.circle(screen, self.color, (self.pos + offset)/zoom, max(2, self.particle_radius/zoom))
+    pygame.draw.circle(screen, self.color, (self.pos + offset)/zoom, max(2, self.particle_radius/zoom), 1)
 
   def draw_line(self, screen, color, length, offset: pygame.Vector2, zoom: pygame.Vector2):
     relative_position = self.pos + offset

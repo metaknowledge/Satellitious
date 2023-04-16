@@ -1,4 +1,4 @@
 class Config:
-  FPS = 60
+  FPS = 30
 
   screen_size = (1280, 720)
