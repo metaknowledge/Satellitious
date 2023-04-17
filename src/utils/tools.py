@@ -7,9 +7,6 @@ def post_quit():
   pygame.event.post(pygame.event.Event(QUIT))
   logging.debug("exit")
 
-def get_screen_sizes():
-  return pygame.display.get_desktop_sizes()
-
 def change_screen_size(size: tuple):
   pygame.display.set_mode(size)
   CustomEvents.post(CustomEvents.CHANGE_SIZE)

@@ -18,19 +18,19 @@ class UIService:
 
   @staticmethod
   def get_title() -> InterfaceNode:
-    title = InterfaceNode.from_surface(VisualizationService.get_fira_font(40).render('->Satellitious<-', True, 'white', 'black'))
+    title = InterfaceNode.from_surface(VisualizationService.get_boxy_font(40).render('->Satellitious<-', True, 'white', 'black'))
     title.rect.topleft = (50, 50)
     return title
 
   def get_menu() -> InterfaceNode:
     #buttons
-    buttons = InterfaceNode.from_size(100, 100)
+    buttons = InterfaceNode.from_size(200, 100)
     buttons.image.fill("black")
     return buttons
 
   @staticmethod
-  def get_menu_button() -> Button:
-    button = pygame.transform.scale(VisualizationService.get_button_four(), (100,25))
+  def get_menu_button(text) -> Button:
+    button = VisualizationService.get_boxy_font(20).render(text, True, "white", "black")
     button = Button.from_surface(button)
     return button
 
@@ -38,24 +38,24 @@ class UIService:
   def get_settings(screen_size) -> InterfaceNode:
     #settings
     settings = InterfaceNode.from_tuple(screen_size)
-    settings.image.fill('blue')
+    settings.image.fill('black')
     return settings
 
   @staticmethod
   def get_settings_close_button() -> Button:
-    button_close = Button.from_surface(VisualizationService.get_fira_font(40).render("EXIT", True, "black", "red"))
+    button_close = Button.from_surface(VisualizationService.get_boxy_font(40).render("EXIT", True, "white", "black"))
     return button_close
 
-  def get_screen_size_buttons(screen_size: pygame.Surface, screen_sizes: list[tuple]) -> InterfaceNode:
-    screen_width = screen_size()[0]
-    screen_buttons = InterfaceNode.from_pos_size(0, 200,screen_width, 100)
-    for i, screen in enumerate(screen_sizes):
-      text = VisualizationService.get_fira_font(20).render(str(screen), True, "white", "black")
-      text = pygame.transform.scale(text, (screen_width/len(screen_sizes), text.get_size()[1]))
-      screen_button = Button.from_surface(text)
-      screen_button.rect.topleft = ((screen_width/len(screen_sizes)) * i, 10)
-      screen_button.add_click_event(lambda: change_screen_size(screen))
-      screen_buttons.add_children(screen_button)
+  @staticmethod
+  def get_screen_fullscreen_toggle() -> Button:
+    fullscreen_button = Button.from_surface(VisualizationService.get_boxy_font(40).render("Fullscreen", True, "white", "black"))
+    fullscreen_button.rect.topleft= (10, 10)
+    fullscreen_button.add_click_event(pygame.display.toggle_fullscreen)
+    return fullscreen_button
 
-
+  @staticmethod
+  def get_fps_button(fps) -> Button:
+    fps_button = Button.from_surface(VisualizationService.get_boxy_font(40).render("max fps: " + str(fps), True, "white", "black"))
+    fps_button.rect.topleft = (10, 100)
+    return fps_button
 

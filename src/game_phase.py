@@ -61,6 +61,9 @@ def predict_player(planets: list[Planet], player: Particle, ticks: int) -> list[
     points.append(points[i]+(vel*dt/100_000))
   return points
 
+def draw_space_ship(screen):
+  rotation = GlobalState.player.rotation
+  pygame.draw.line(screen, 'white', )
 
 
 def collisions(planets: list[Particle]) -> None:
@@ -86,40 +89,62 @@ def track(planets: list[Particle]) -> None:
         particle.points.pop(0)
 
 def draw_fps(screen):
-  fira_code = VisualizationService.get_fira_font(40)
-  fps = fira_code.render('fps:' + str(GlobalState.clock.get_fps().__trunc__()), True, "white")
+  fps = VisualizationService.get_boxy_font(40).render('fps:' + str(GlobalState.clock.get_fps().__trunc__()), True, "white")
   screen.blit(fps, (0,0))
 
 
-def main_menu(menu_buttons: InterfaceNode):
+def main_menu():
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       GlobalState.running = False
     if event.type == pygame.MOUSEBUTTONUP:
-      if GlobalState.GAME_STATE == GameState.MAIN_MENU:
-        mouse_position = pygame.Vector2(event.pos)
-        for child in menu_buttons.children.sprites():
-          child.collide_with_mouse(mouse_position)
+      mouse_position = pygame.Vector2(event.pos)
+      for button in GlobalState.menu_buttons.sprites():
+        button.collide_with_mouse(mouse_position)
+    if event.type == CustomEvents.SETTINGS:
+      replace_node(GlobalState.world_ui, GlobalState.main_menu_screen, GlobalState.settings_screen)
+      GlobalState.GAME_STATE = GameState.SETTINGS
+      logging.info("settings")
+
     if event.type == CustomEvents.PLAY:
       replace_node(GlobalState.world_ui, GlobalState.main_menu_screen, GlobalState.game_screen)
       GlobalState.GAME_STATE = GameState.GAME
       GlobalState.planets = load_planets()
-      logging.debug("changed game!")
+      logging.info("changed game!")
 
+def settings():
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      GlobalState.running = False
+    if event.type == pygame.MOUSEBUTTONUP:
+      mouse_position = pygame.Vector2(event.pos)
+      # for child in close_button.children.sprites():
+      for button in GlobalState.settings_buttons.sprites():
+        button.collide_with_mouse(mouse_position)
+        logging.info(button.rect)
+    if event.type == CustomEvents.MENU:
+      logging.info("menu")
+      replace_node(GlobalState.world_ui, GlobalState.settings_screen, GlobalState.main_menu_screen)
+      # GlobalState.load_user_interface()
+      GlobalState.GAME_STATE = GameState.MAIN_MENU
 
 
 
 #called once every tick
-def game(screen: pygame.Surface):
+def game():
+  screen = GlobalState.game_screen.image
+  screen.fill('black')
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       GlobalState.running = False
     if event.type == pygame.MOUSEWHEEL:
       GlobalState.zoom += event.y * 0.01 * GlobalState.zoom
-    if event.type == pygame.KEYDOWN and event.unicode == 'p':
-      GlobalState.focus = not GlobalState.focus
+    if event.type == pygame.KEYDOWN:
+      if event.unicode == 'p':
+        GlobalState.focus = not GlobalState.focus
+      elif event.unicode == 'm':
+        GlobalState.hidden_map = not GlobalState.hidden_map
 
-  screen.fill("black")
   physics(GlobalState.planets, GlobalState.ticks, GlobalState.player)
 
   keys = pygame.key.get_pressed()
@@ -132,18 +157,22 @@ def game(screen: pygame.Surface):
   if keys[pygame.K_LEFT]:
     GlobalState.offset.x += GlobalState.zoom * GlobalState.delta * 1000
 
-  if GlobalState.focus:
-    target = GlobalState.player.pos.copy()
-    new_offset = (pygame.Vector2(screen.get_size()) * GlobalState.zoom / 2) - target
-    GlobalState.offset = new_offset
+  draw_space_ship(screen)
 
-  draw_planets(screen, GlobalState.planets, GlobalState.player)
-  # draw_fps(screen)
-  points = predict_player(GlobalState.planets, GlobalState.player, GlobalState.ticks)
-  points = map(GlobalState.true_position, points)
-  points = list(points)
-  pygame.draw.aalines(screen, "yellow", False, points)
-    # collisions(GlobalState.planets)
+  space_map = GlobalState.space_map
+  space_map.fill("black")
+  if GlobalState.hidden_map:
+    if GlobalState.focus:
+      target = GlobalState.player.pos.copy()
+      new_offset = (pygame.Vector2(space_map.get_size()) * GlobalState.zoom / 2) - target
+      GlobalState.offset = new_offset
+    draw_planets(space_map, GlobalState.planets, GlobalState.player)
+    draw_fps(space_map)
+    points = predict_player(GlobalState.planets, GlobalState.player, GlobalState.ticks)
+    points = map(GlobalState.true_position, points)
+    points = list(points)
+    pygame.draw.aalines(space_map, "yellow", False, points)
+    screen.blit(space_map, (0, 0))
 
 
 

@@ -26,6 +26,10 @@ class VisualizationService:
     return pygame.image.load(IMG_DIR / "background.PNG")
 
   @staticmethod
+  def get_boxy_font(font_size):
+    return pygame.font.Font(ASSETS_DIR / "fonts" / "Boxy-Bold.ttf", font_size)
+
+  @staticmethod
   def get_fira_font(font_size: int):
     return pygame.font.Font(ASSETS_DIR / "fonts" / "FiraCode-Regular.ttf", font_size)
 
