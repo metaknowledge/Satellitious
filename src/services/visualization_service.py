@@ -5,6 +5,7 @@ from src.components.interface_node import InterfaceNode, Button
 from src.utils.tools import post_quit,change_screen_size
 
 class VisualizationService:
+  #IMAGES
   @staticmethod
   def change_screen_size(size):
     pygame.display.set_mode(size)
@@ -26,6 +27,15 @@ class VisualizationService:
     return pygame.image.load(IMG_DIR / "background.PNG")
 
   @staticmethod
+  def get_asteroid_img_two():
+    return pygame.image.load(IMG_DIR / "asteroidOne.png")
+
+  @staticmethod
+  def get_asteroid_img_one():
+    return pygame.image.load(IMG_DIR / "asteroidTwo.png")
+
+  #FONTS
+  @staticmethod
   def get_boxy_font(font_size):
     return pygame.font.Font(ASSETS_DIR / "fonts" / "Boxy-Bold.ttf", font_size)
 
@@ -33,6 +43,7 @@ class VisualizationService:
   def get_fira_font(font_size: int):
     return pygame.font.Font(ASSETS_DIR / "fonts" / "FiraCode-Regular.ttf", font_size)
 
+  #OTHER
   @staticmethod
   def load_icon():
     pygame.display.set_caption("Asteroids")

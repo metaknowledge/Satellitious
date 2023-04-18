@@ -25,7 +25,7 @@ def main():
 
   GlobalState.load_user_interface()
 
-  GlobalState.player = Player(pygame.Vector2(20000, 0), "white", 0.1, pygame.Vector2(0, 1), pygame.Vector2(0, 1))
+  GlobalState.player = Player(pygame.Vector2(21000, 0), "white", 0.1, pygame.Vector2(0, -1), pygame.Vector2(0, -1))
 
   # game loop
   while GlobalState.running:

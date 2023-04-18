@@ -1,16 +1,13 @@
 import pygame
 from src.components.particle import Particle
 
-
 import math
-from typing import Self
 import logging
 
 class Planet(Particle):
   origin: pygame.Vector2
   orbital_radius: float
   frequency: float
-
 
   def __init__(self, position: pygame.Vector2, color, objectmass, origin, orbital_radius, orbiting_planet_mass):
     super().__init__(position, color, objectmass)

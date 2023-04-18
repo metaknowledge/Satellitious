@@ -17,9 +17,9 @@ class Player(Particle):
     for planet in planets:
       acceleration = self.cal_gravity(planet)
       self.vel += acceleration
-
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
+        GlobalState.accelerating = True
         self.vel += self.rotation * 0.01
     if keys[pygame.K_a]:
       self.rotation.rotate_ip(-1)

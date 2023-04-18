@@ -1,14 +1,14 @@
 import pygame
 from pygame.locals import *
 
-from src.components.game_state import GameState
+from src.components.game_state import GameState, AsteroidBelt
 from src.services.visualization_service import VisualizationService
 from src.config import Config
 from src.components.interface_node import InterfaceNode
 from src.services.UI_service import UIService
 from src.utils.tools import add_tuples
 from src.custom_events import CustomEvents
-from src.components.player import Player
+
 
 import logging
 
@@ -28,18 +28,20 @@ class GlobalState:
   zoom = 1
   ticks = 0
   running = True
-  focus = False
-  player: Player = None
+  focus = True
+  player = None
+  accelerating = False
   main_menu_screen: InterfaceNode
   game_screen: InterfaceNode
   settings_screen: InterfaceNode
   space_map: pygame.Surface
   hidden_map = False
-
+  asteroid_belt: AsteroidBelt = None
+  asteroid_group = pygame.sprite.Group()
 
   @staticmethod
   def load_window():
-    GlobalState.SCREEN = pygame.display.set_mode(pygame.display.get_desktop_sizes()[0])
+    GlobalState.SCREEN = pygame.display.set_mode((1280, 720))
     GlobalState.SCREEN.fill("black")
     GlobalState.clock = pygame.time.Clock()
     pygame.display.set_caption("Satellitious")
@@ -77,7 +79,7 @@ class GlobalState:
     fullscreen_button = UIService.get_screen_fullscreen_toggle()
 
     fps_button = UIService.get_fps_button(Config.FPS)
-    fps_button.add_click_event(lambda: Config.increase_FPS())
+    fps_button.add_click_event(Config.increase_FPS)
 
     settings_screen.add_children(close_settings_button, fullscreen_button, fps_button)
     GlobalState.settings_buttons.add(close_settings_button, fullscreen_button, fps_button)
