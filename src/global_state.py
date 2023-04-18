@@ -8,7 +8,7 @@ from src.components.interface_node import InterfaceNode
 from src.services.UI_service import UIService
 from src.utils.tools import add_tuples
 from src.custom_events import CustomEvents
-
+from src.components.bullet import Bullet
 
 import logging
 
@@ -38,6 +38,8 @@ class GlobalState:
   hidden_map = False
   asteroid_belt: AsteroidBelt = None
   asteroid_group = pygame.sprite.Group()
+  lives = 3
+  bullet: Bullet = Bullet(pygame.Vector2(0,0), pygame.Vector2(0,0))
 
   @staticmethod
   def load_window():

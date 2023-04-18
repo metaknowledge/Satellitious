@@ -18,6 +18,6 @@ def load_planets() -> list[Planet]:
 
   return [sun, earth, jupiter, neptune]
 
-def mouse_position(pos):
+def mouse_position(screen, pos, font: pygame.font.Font):
   pygame.draw.circle(screen, 'white', pos, 1)
-  screen.blit(game.fira_code.render(str(pos), true, "white"), pos)
+  screen.blit(font.render(str(pos), True, "white"), pos)
