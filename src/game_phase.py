@@ -68,7 +68,6 @@ def draw_asteroid_belt_level(screen: pygame.Surface):
     level = VisualizationService.get_boxy_font(40).render("Move into asteroid belt", True, "white", "black")
   screen.blit(level, (0, screen.get_height() - level.get_height()))
 
-
 def predict_player(planets: list[Planet], player: Particle, ticks: int) -> list[pygame.Vector2]:
   points: list[pygame.Vector2] = [player.pos.copy()]
   vel: pygame.Vector2 = player.vel.copy()

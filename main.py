@@ -18,6 +18,7 @@ logging.basicConfig(filename='logs.log',filemode="w", encoding='utf-8', level=lo
 
 
 def main():
+  # start pygame
   pygame.init()
   GlobalState.load_window()
   screen_sizes = pygame.display.get_desktop_sizes()
@@ -37,6 +38,8 @@ def main():
       game()
 
     GlobalState.SCREEN.fill("white")
+
+
 
     GlobalState.world_ui.update()
     GlobalState.world_ui.draw(GlobalState.SCREEN)

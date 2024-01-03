@@ -13,7 +13,6 @@ class Player(Particle):
     self.vel = velocity
     self.rotation = rotation
 
-
   def update(self, planets) -> pygame.Vector2:
     total_acceleration = pygame.Vector2(0,0)
     for planet in planets:

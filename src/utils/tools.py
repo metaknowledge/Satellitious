@@ -12,6 +12,7 @@ def change_screen_size(size: tuple):
   CustomEvents.post(CustomEvents.CHANGE_SIZE)
   logging.info(size)
 
+# replaces old_node with new_node in group
 def replace_node(group, old_node, new_node):
   group.remove(old_node)
   group.add(new_node)
