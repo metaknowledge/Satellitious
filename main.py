@@ -39,8 +39,6 @@ def main():
 
     GlobalState.SCREEN.fill("white")
 
-
-
     GlobalState.world_ui.update()
     GlobalState.world_ui.draw(GlobalState.SCREEN)
 
