@@ -11,4 +11,4 @@ hopefully one day
 
 ![home screen](./assets/imgs/homescreen.png "The Home Screen")
 ![asteroids](./assets/imgs/asteroids.png "Picture of Asteroids")
-![map of orbits](./assets/imgs/orbitsmap.png "What the map looks like with the orbits of the planets")
+![map of orbits](./assets/imgs/orbitmap.png "What the map looks like with the orbits of the planets")
