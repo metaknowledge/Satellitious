@@ -168,6 +168,11 @@ def summon_asteroids():
   if len(GlobalState.asteroid_group.sprites()) <= 10:
     GlobalState.asteroid_group.add(Asteroid.random())
 
+def draw_prediction_lines(space_map):
+    points = predict_player(GlobalState.planets, GlobalState.player, GlobalState.ticks)
+    points = map(GlobalState.true_position, points)
+    points = list(points)
+    pygame.draw.aalines(space_map, "yellow", False, points)
 
 #called once every tick
 def game():
@@ -187,8 +192,9 @@ def game():
     if event.type == CustomEvents.DEATH:
       if GlobalState.lives == 0:
         CustomEvents.post(CustomEvents.DEAD)
-      GlobalState.lives -= 1
-    if event.type == CustomEvents.DEATH:
+      else:
+        GlobalState.lives -= 1
+    if event.type == CustomEvents.DEAD:
       replace_node(GlobalState.world_ui, GlobalState.game_screen, GlobalState.main_menu_screen)
       GlobalState.GAME_STATE = GameState.MAIN_MENU
       GlobalState.lives = 3
@@ -232,10 +238,7 @@ def game():
     draw_planets(space_map, GlobalState.planets, GlobalState.player)
     draw_fps(space_map)
     draw_asteroid_belt_level(space_map)
-    points = predict_player(GlobalState.planets, GlobalState.player, GlobalState.ticks)
-    points = map(GlobalState.true_position, points)
-    points = list(points)
-    pygame.draw.aalines(space_map, "yellow", False, points)
+    draw_prediction_lines(space_map)
     screen.blit(space_map, (0, 0))
 
 
@@ -413,6 +416,11 @@ def summon_asteroids():
   if len(GlobalState.asteroid_group.sprites()) <= 10:
     GlobalState.asteroid_group.add(Asteroid.random())
 
+def draw_prediction_lines(space_map):
+    points = predict_player(GlobalState.planets, GlobalState.player, GlobalState.ticks)
+    points = map(GlobalState.true_position, points)
+    points = list(points)
+    pygame.draw.aalines(space_map, "yellow", False, points)
 
 #called once every tick
 def game():
@@ -432,8 +440,9 @@ def game():
     if event.type == CustomEvents.DEATH:
       if GlobalState.lives == 0:
         CustomEvents.post(CustomEvents.DEAD)
-      GlobalState.lives -= 1
-    if event.type == CustomEvents.DEATH:
+      else:
+        GlobalState.lives -= 1
+    if event.type == CustomEvents.DEAD:
       replace_node(GlobalState.world_ui, GlobalState.game_screen, GlobalState.main_menu_screen)
       GlobalState.GAME_STATE = GameState.MAIN_MENU
       GlobalState.lives = 3
@@ -477,14 +486,10 @@ def game():
     draw_planets(space_map, GlobalState.planets, GlobalState.player)
     draw_fps(space_map)
     draw_asteroid_belt_level(space_map)
-    points = predict_player(GlobalState.planets, GlobalState.player, GlobalState.ticks)
-    points = map(GlobalState.true_position, points)
-    points = list(points)
-    pygame.draw.aalines(space_map, "yellow", False, points)
+    draw_prediction_lines(space_map)
     screen.blit(space_map, (0, 0))
 
 
 
 
 
->>>>>>> caa9f23c1f0a44c7ce068ce12609939477b9d911
